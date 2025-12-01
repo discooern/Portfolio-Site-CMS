@@ -1,10 +1,10 @@
 <template>
-  <body>
+  <body class="overflow-x-hidden">
     <div class="flex flex-col justify-between">
       <PageHeader>
-        
+
       </PageHeader>
-      <main class="max-w-[80vw] mx-auto">
+      <main class="max-w-[90vw] mx-auto">
         <NuxtLayout>
           <NuxtPage>
 
