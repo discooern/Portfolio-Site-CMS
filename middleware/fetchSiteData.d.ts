@@ -24,11 +24,8 @@ export default defineNuxtRouteMiddleware(async (to: any) => {
             // xApiKey: config.xApiKey,
         });
 
-        // var pages = await contentService.getPages();
-        // store.pages = pages;
-        store.pages = [
-
-        ];
+        var pages = await contentService.getPages();
+        store.pages = pages;
         console.log("pages", pages);
     }
 });
