@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
     // Models
-    import type ContentModel from '../types/Content';
+    import type ContentModel from '../types/content';
 
     interface Props {
         toggled: boolean

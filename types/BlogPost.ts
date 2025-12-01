@@ -1,5 +1,5 @@
 // Models
-import type ContentModel from './Content';
+import type ContentModel from './content';
 
 export default interface BlogPost {
     id: string;

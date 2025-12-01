@@ -8,7 +8,7 @@
     import { RTEBlock } from '../../components';
 
     // Models
-    import type ContentModel from '../../types/Content';
+    import type ContentModel from '../../types/content';
 
     interface Props {
         item: ContentModel

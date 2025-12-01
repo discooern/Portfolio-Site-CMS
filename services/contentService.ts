@@ -6,7 +6,7 @@ import { useMainStore } from '../stores/store';
 import ContentHelper from '../helpers/contentHelper';
 
 // Models
-import type ContentModel from '../types/Content';
+import type ContentModel from '../types/content';
 
 export default class ProductService {
     store: any = useMainStore();

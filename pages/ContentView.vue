@@ -41,8 +41,8 @@ import { useMainStore } from '../stores/store';
 import ContentService from '../services/contentService';
 
 // Models
-import type BlogPostModel from '../types/BlogPost';
-import type ContentModel from '../types/Content';
+import type BlogPostModel from '../types/blogPost';
+import type ContentModel from '../types/content';
 
 const store: any = useMainStore();
 

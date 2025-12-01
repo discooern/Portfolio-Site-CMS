@@ -1,6 +1,6 @@
 // Models
-import type BlogPostDTOModel from '../types/BlogPostDTO';
-import type ContentModel from '../types/Content';
+import type BlogPostDTOModel from '../types/blogPostDTO';
+import type ContentModel from '../types/content';
 
 export default class ContentHelper {
     mapBlogPostDTO(name: string, content: ContentModel[]): BlogPostDTOModel {
