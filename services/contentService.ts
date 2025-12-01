@@ -14,11 +14,11 @@ export default class ProductService {
     // Helpers
     contentHelper: ContentHelper = new ContentHelper;
 
-    async savePage(name: string, content: ContentModel[]): Promise<Array<any>> {
+    async savePage(name: string, content: ContentModel[]): Promise<any> {
         try {
             var blogPost = this.contentHelper.mapBlogPostDTO(name, content);
 
-            const response = await axios.get<Array<any>>(`${this.store.apiBaseurl}/content/savePage`, {
+            const response = await axios.get<any>(`${this.store.apiBaseurl}/content/savePage`, {
                 params: {
                     blogPost: JSON.stringify(blogPost)
                 },
@@ -34,9 +34,9 @@ export default class ProductService {
         }
     }
 
-    async deletePage(id: string): Promise<Array<any>> {
+    async deletePage(id: string): Promise<any> {
         try {
-            const response = await axios.get<Array<any>>(`${this.store.apiBaseurl}/content/deletePage`, {
+            const response = await axios.get<any>(`${this.store.apiBaseurl}/content/deletePage`, {
                 params: {
                     id: JSON.stringify(id)
                 },
@@ -49,6 +49,21 @@ export default class ProductService {
             return response.data;
         } catch (error) {
             throw new Error('Error deleting content: ' + error);
+        }
+    }
+
+    async getPages(): Promise<Array<any>> {
+        try {
+            const response = await axios.get<Array<any>>(`${this.store.apiBaseurl}/content/getPages`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'X-API-Key': this.store.xApiKey
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            throw new Error('Error getting content: ' + error);
         }
     }
 }
