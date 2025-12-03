@@ -4,6 +4,8 @@
             <button class="add text-[.8em] p-[.2em] px-[.8em] m-[.5em]" @click="saveContent">Save</button>
             <button class="delete text-[.8em] p-[.2em] px-[.8em] m-[.5em]" @click="deleteContent">Delete</button>
         </div>
+
+        <!-- Quill editor container -->
         <div ref="editorRef"></div>
     </div>
 </template>
@@ -16,38 +18,56 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<{ (e: 'saveContent', content: string): void, (e: 'deleteContent'): void }>()
+const emit = defineEmits<{
+  (e: 'saveContent', content: string): void
+  (e: 'deleteContent'): void
+}>()
 
 const editorRef = ref<HTMLDivElement | null>(null)
 let quillInstance: any = null
 
 onMounted(async () => {
-  // Only run on client
-  if (editorRef.value) {
-    const Quill = (await import('quill')).default
-    await import('quill/dist/quill.core.css')
-    await import('quill/dist/quill.snow.css')
+  if (!editorRef.value) return
 
-    quillInstance = new Quill(editorRef.value, {
-      theme: 'snow'
-    })
+  const Quill = (await import('quill')).default
+  await import('quill/dist/quill.core.css')
+  await import('quill/dist/quill.snow.css')
 
-    if (props.content != undefined) {
-        quillInstance.root.innerHTML = props.content;
+  quillInstance = new Quill(editorRef.value, {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        [{ direction: 'rtl' }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ['link', 'image', 'code-block', 'video', 'formula'],
+        ['clean']
+      ],
+      clipboard: {
+        matchVisual: false
+      }
     }
+  })
+
+  // Load initial content
+  if (props.content) {
+    quillInstance.root.innerHTML = props.content
   }
 })
 
 function saveContent() {
-  if (quillInstance) {
-    const content = quillInstance.root.innerHTML
-    emit('saveContent', content)
-  }
+  if (!quillInstance) return
+  emit('saveContent', quillInstance.root.innerHTML)
 }
 
 function deleteContent() {
-    if (quillInstance) {
-        emit('deleteContent')
-    }
+  emit('deleteContent')
 }
 </script>
