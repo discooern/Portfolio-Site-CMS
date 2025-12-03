@@ -11,10 +11,11 @@
 </template>
 
 <script setup lang="ts">
+import type Quill from 'quill';
 import { ref, onMounted } from 'vue'
 
 interface Props {
-  content: string
+  contentJson: any;
 }
 
 const props = defineProps<Props>()
@@ -24,14 +25,14 @@ const emit = defineEmits<{
 }>()
 
 const editorRef = ref<HTMLDivElement | null>(null)
-let quillInstance: any = null
+let quillInstance: Quill | undefined = undefined;
 
 onMounted(async () => {
-  if (!editorRef.value) return
+  if (!editorRef.value) return;
 
-  const Quill = (await import('quill')).default
-  await import('quill/dist/quill.core.css')
-  await import('quill/dist/quill.snow.css')
+  const Quill = (await import('quill')).default;
+  await import('quill/dist/quill.core.css');
+  await import('quill/dist/quill.snow.css');
 
   quillInstance = new Quill(editorRef.value, {
     theme: 'snow',
@@ -54,20 +55,21 @@ onMounted(async () => {
         matchVisual: false
       }
     }
-  })
+  });
 
   // Load initial content
-  if (props.content) {
-    quillInstance.root.innerHTML = props.content
+  if (props.contentJson) {
+	console.log(props.contentJson);
+	quillInstance.setContents(props.contentJson);
   }
 })
 
 function saveContent() {
-  if (!quillInstance) return
-  emit('saveContent', quillInstance.root.innerHTML)
+  if (!quillInstance) return;
+  emit('saveContent', quillInstance.root.innerHTML);
 }
 
 function deleteContent() {
-  emit('deleteContent')
+  emit('deleteContent');
 }
 </script>

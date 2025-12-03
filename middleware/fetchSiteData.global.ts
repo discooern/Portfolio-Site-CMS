@@ -19,13 +19,13 @@ export default defineNuxtRouteMiddleware(async (to: any) => {
     const config = useRuntimeConfig();
 
     if (import.meta.server) {
-        store.setConfig({
-            apiBaseurl: config.apiBaseurl,
-            // xApiKey: config.xApiKey,
-        });
+        // store.setConfig({
+        //     apiBaseurl: config.apiBaseurl,
+        //     // xApiKey: config.xApiKey,
+        // });
 
         var pages = await contentService.getPages();
-        store.pages = pages;
-        console.log("pages", pages);
+        store.routes = pages;
+        // console.log("pages", pages);
     }
 });

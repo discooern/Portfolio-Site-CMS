@@ -2,9 +2,14 @@
 import type ContentModel from './content';
 
 export default interface BlogPost {
-    id: string;
+    id: number;
     title: string;
     slug: string;
-    content: ContentModel[];
+    contentJson: any[] | undefined;
     summary: string;
+	createdAt: Date;
+	updatedAt: Date;
+	publishedAt: Date;
+	isPublished: boolean;
+	authorId: number;
 }

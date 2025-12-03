@@ -1,17 +1,19 @@
 <template>
-    <div class="w-[100%] min-h-[100px]" v-if="item.type == 'richText'">
-        <RTEBlock @saveContent="saveContent" @deleteContent="deleteContent" :content="item.content"></RTEBlock>
+    <div class="w-[100%] min-h-[100px]" v-if="'richText' == 'richText'">
+        <RTEBlock @saveContent="saveContent" @deleteContent="deleteContent" :contentJson="blogPost.contentJson"></RTEBlock>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { RTEBlock } from '../../components';
+    import type BlogPost from '~/types/BlogPost';
+	import { RTEBlock } from '../../components';
 
     // Models
     import type ContentModel from '../../types/content';
 
     interface Props {
-        item: ContentModel
+		blogPost: BlogPost;
+        // item: ContentModel;
     }
 
     const props = defineProps<Props>();

@@ -4,15 +4,15 @@ export const useMainStore = defineStore('main', {
 
     // Globally available fields
     state: () => ({
-        apiBaseurl: '',
+        apiBaseurl: 'http://localhost:5147',
         xApiKey: '',
-        pages: [],
+        routes: [] as any,
     }),
 
     // Globally available functions
     actions: {
         setConfig(runtimeConfig: any) {
-            this.apiBaseurl = runtimeConfig.apiBaseurl;
+            this.apiBaseurl = import.meta.env.API_BASEURL;
             this.xApiKey = runtimeConfig.xApiKey;
         },
     },
