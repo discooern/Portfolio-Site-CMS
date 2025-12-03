@@ -8,11 +8,12 @@ export default class ContentHelper {
         var slug = name.replace(" ", "-");
 
         var blogPost: BlogPostDTOModel = {
-            id: "",
             title: name,
-            content: resultContent,
+            contentJson: resultContent,
             slug: slug,
-            summary: ""
+            summary: "",
+            isPublished: false,
+            authorId: 0
         };
 
         return blogPost;

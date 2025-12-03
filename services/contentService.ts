@@ -15,19 +15,18 @@ export default class ProductService {
     // Helpers
     contentHelper: ContentHelper = new ContentHelper;
 
-    async savePage(name: string, content: ContentModel[]): Promise<any> {
+    async savePage(updatedBlogPost: BlogPost): Promise<any> {
         try {
-            var blogPost = this.contentHelper.mapBlogPostDTO(name, content);
+            // var blogPost = this.contentHelper.mapBlogPostDTO(name, content);
 
-            const response = await axios.get<any>(`${this.store.apiBaseurl}/content/savePage`, {
-                params: {
-                    blogPost: JSON.stringify(blogPost)
-                },
+            const response = await axios.patch<BlogPost>(`${this.store.apiBaseurl}/blogposts/patch`, updatedBlogPost, {
                 headers: {
                     'Content-Type': 'application/json',
                     // 'X-API-Key': this.store.xApiKey
                 }
             });
+
+            console.log(response.data);
 
             return response.data;
         } catch (error) {

@@ -52,7 +52,7 @@ const contentService: ContentService = new ContentService;
 // Fields
 let currentlySelectedPageIndex = ref(0);
 let addContentToggled = ref(false);
-let selectedBlogPost: BlogPost | undefined;
+const selectedBlogPost = ref<BlogPost | undefined>(undefined);
 
 setIndex(0);
 
@@ -62,8 +62,14 @@ function addItem(item: ContentModel) {
     addContentToggled.value = false
 }
 
-function saveContent(content: string, index: number) {
-    store.routes[currentlySelectedPageIndex.value].content[index].content = content;
+async function saveContent(content: string, index: number) {
+    let tempBlogPost = selectedBlogPost.value;
+
+    if (!tempBlogPost) return;
+
+    tempBlogPost.contentJson = content as any;
+    
+    await contentService.savePage(tempBlogPost); 
 }
 
 function deleteContent(index: number) {
@@ -77,10 +83,10 @@ async function setIndex(index: number) {
     console.log("new index", currentlySelectedPageIndex.value)
 	
 	let page = store.routes[index];
-	
+    
     const result = await contentService.getArticleContent(page.id);
-	console.log("result", result);
-	selectedBlogPost = result.data;
+    
+	selectedBlogPost.value = result.data;
 }
 
 function closeModal() {

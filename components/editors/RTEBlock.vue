@@ -1,4 +1,5 @@
 <template>
+    <!-- <p>{{ contentJson }}</p> -->
     <div class="relative">
         <div class="absolute -top-0 -right-0 flex">
             <button class="add text-[.8em] p-[.2em] px-[.8em] m-[.5em]" @click="saveContent">Save</button>
@@ -12,7 +13,7 @@
 
 <script setup lang="ts">
 import type Quill from 'quill';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
 interface Props {
   contentJson: any;
@@ -59,14 +60,21 @@ onMounted(async () => {
 
   // Load initial content
   if (props.contentJson) {
-	console.log(props.contentJson);
-	quillInstance.setContents(props.contentJson);
+	quillInstance.setContents(JSON.parse(props.contentJson));
   }
+  
+});
+
+watch(() => props.contentJson, (val) => {
+    if (!quillInstance || !val) return;
+    
+    quillInstance.setContents(JSON.parse(props.contentJson))
 })
+
 
 function saveContent() {
   if (!quillInstance) return;
-  emit('saveContent', quillInstance.root.innerHTML);
+  emit('saveContent', JSON.stringify(quillInstance.getContents()));
 }
 
 function deleteContent() {
