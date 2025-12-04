@@ -8,12 +8,32 @@ import ContentHelper from '../helpers/contentHelper';
 // Models
 import type ContentModel from '../types/content';
 import type BlogPost from '~/types/BlogPost';
+import type BlogPostDTO from '~/types/blogPostDTO';
 
 export default class ProductService {
     store: any = useMainStore();
 
     // Helpers
     contentHelper: ContentHelper = new ContentHelper;
+
+    async createPage(newBlogPost: BlogPostDTO): Promise<AxiosResponse<BlogPost>> {
+        try {
+            // var blogPost = this.contentHelper.mapBlogPostDTO(name, content);
+
+            const response = await axios.post<BlogPost>(`${this.store.apiBaseurl}/blogposts/create`, newBlogPost, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'X-API-Key': this.store.xApiKey
+                }
+            });
+
+            console.log(response);
+
+            return response;
+        } catch (error) {
+            throw new Error('Error saving content: ' + error);
+        }
+    }
 
     async savePage(updatedBlogPost: BlogPost): Promise<any> {
         try {

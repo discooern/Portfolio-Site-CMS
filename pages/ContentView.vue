@@ -58,6 +58,7 @@ setIndex(0);
 
 // Functions
 function addItem(item: ContentModel) {
+	console.log(store.routes[currentlySelectedPageIndex.value]);
     store.routes[currentlySelectedPageIndex.value].content.push(item)
     addContentToggled.value = false
 }
@@ -85,6 +86,16 @@ async function setIndex(index: number) {
 	let page = store.routes[index];
     
     const result = await contentService.getArticleContent(page.id);
+
+	console.log(result.status);
+	if (result.status !== 200 && result.status !== 201) {
+		selectedBlogPost.value = page;
+
+
+		console.log("AWDAWDAWD");
+		console.log(selectedBlogPost.value);
+		return;
+	}
     
 	selectedBlogPost.value = result.data;
 }
@@ -95,15 +106,21 @@ function closeModal() {
 }
 
 function createPage() {
-    const blogPost: BlogPostDTO =
-    {
+    // const blogPost: BlogPostDTO =
+    // {
+	// 	title: "New Page",
+	// 	slug: "New-Page",
+	// 	contentJson: [],
+	// 	summary: "",
+	// 	isPublished: false,
+	// 	authorId: 0
+	// };
+
+	const blogPost: any = {
+		id: null,
 		title: "New Page",
-		slug: "New-Page",
-		contentJson: [],
-		summary: "",
-		isPublished: false,
-		authorId: 0
-	};
+		slug: "New-Page"
+	}
 
     currentlySelectedPageIndex.value = store.routes.length;
     store.routes.push(blogPost);
@@ -125,8 +142,29 @@ async function deletePage(id: string) {
     }
 }
 
-async function saveChanges(pageName: string) {
-    var pageToSave = store.routes[0];
-    await contentService.savePage(pageName, pageToSave);
+async function saveChanges() {
+    var pageToSave = store.routes[currentlySelectedPageIndex.value];
+
+	if (pageToSave.id == null) {
+		const blogPost: BlogPostDTO =
+		{
+			title: pageToSave.title,
+			slug: pageToSave.slug,
+			contentJson: "{}",
+			summary: "",
+			isPublished: false,
+			authorId: 0
+		};
+
+		await contentService.createPage(blogPost);
+		return;
+	}
+
+	if (!selectedBlogPost.value) return;
+
+	console.log(pageToSave);
+	selectedBlogPost.value.title = pageToSave.title;
+	await contentService.savePage(selectedBlogPost.value);
+
 }
 </script>

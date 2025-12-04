@@ -7,13 +7,19 @@
         </div>
 
         <!-- Quill editor container -->
-        <div ref="editorRef"></div>
+        <div ref="editorRef" class="ql-snow"></div>
     </div>
 </template>
 
 <script setup lang="ts">
 import type Quill from 'quill';
 import { ref, onMounted } from 'vue';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import hljs from 'highlight.js';
+import "highlight.js/styles/atom-one-dark.css";
+
+
 
 interface Props {
   contentJson: any;
@@ -32,12 +38,13 @@ onMounted(async () => {
   if (!editorRef.value) return;
 
   const Quill = (await import('quill')).default;
-  await import('quill/dist/quill.core.css');
-  await import('quill/dist/quill.snow.css');
 
   quillInstance = new Quill(editorRef.value, {
     theme: 'snow',
     modules: {
+		syntax: {
+			hljs
+		},
       toolbar: [
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],
